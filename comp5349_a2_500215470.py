@@ -12,12 +12,7 @@ This notebook demonstrates a few useful methods for loading json file and for ha
 
 !pip install pyspark
 
-"""### Connect to Google Drive"""
 
-from google.colab import drive
-drive.mount('/content/drive')
-
-"""### Creat spark"""
 
 from pyspark.sql import SparkSession
 
@@ -31,7 +26,7 @@ spark = SparkSession \
 
 """### Load Json file as data frame"""
 
-test_data = "/content/drive/MyDrive/comp5349/a2_data/test.json"
+test_data = "s3://edmondfucomp5349a2/test.json"
 test_init_df = spark.read.json(test_data)
 
 # The original file will be loaded into a data frame with one row and two columns

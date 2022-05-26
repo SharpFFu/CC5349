@@ -163,7 +163,7 @@ def sample_impos(line):
 impos_sample_rdd = impos_sample_rdd.flatMap(sample_impos)
 
 impos_result = spark.createDataFrame(impos_sample_rdd).cache()
-result = pos_result.union(impossible_result)
+result = pos_result.union(impos_result)
 
 result.show()
 

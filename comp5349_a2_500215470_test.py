@@ -10,12 +10,7 @@ Original file is located at
 This notebook demonstrates a few useful methods for loading json file and for handling nested json objects. The example file is `test.json` in assignment 2.
 """
 
-!pip install pyspark
 
-"""### Connect to Google Drive"""
-
-from google.colab import drive
-drive.mount('/content/drive')
 
 """### Creat spark"""
 
@@ -24,14 +19,11 @@ from pyspark.sql import SparkSession
 spark = SparkSession \
     .builder \
     .appName("COMP5349 A2 500215470") \
-    .config("spark.driver.memory", "16g")\
-    .config("spark.sql.inMemoryColumnarStorage.compressed", "true")\
-    .config("spark.sql.execution.arrow.enabled", "true")\
     .getOrCreate()
 
 """### Load Json file as data frame"""
 
-test_data = "/content/drive/MyDrive/comp5349/a2_data/test.json"
+test_data = "s3://edmondfucomp5349a2/test.json"
 test_init_df = spark.read.json(test_data)
 
 # The original file will be loaded into a data frame with one row and two columns

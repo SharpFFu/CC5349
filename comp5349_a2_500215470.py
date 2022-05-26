@@ -19,9 +19,6 @@ from pyspark.sql import SparkSession
 spark = SparkSession \
     .builder \
     .appName("COMP5349 A2 500215470") \
-    .config("spark.driver.memory", "16g")\
-    .config("spark.sql.inMemoryColumnarStorage.compressed", "true")\
-    .config("spark.sql.execution.arrow.enabled", "true")\
     .getOrCreate()
 
 """### Load Json file as data frame"""

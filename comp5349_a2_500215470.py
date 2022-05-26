@@ -104,7 +104,7 @@ def sample_pos(line):
              index_end=window
           result.append(Row(source=line[0][i * stride: i * stride + window], qas_question=line[1], answer_start=line[3] % stride, answer_end=index_end, type_name="positive"))
         else:
-          neg_result.append(Row(source=line[0][i * stride: i * stride + window], qas_question=line[1], answer_start=line[3] % stride, answer_end=index_end, type_name="possible negative"))                
+          neg_result.append(Row(source=line[0][i * stride: i * stride + window], qas_question=line[1], answer_start=0, answer_end=0, type_name="possible negative"))                
     result.extend(neg_result[:index])
     return result
 

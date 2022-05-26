@@ -200,7 +200,7 @@ Ne_result = spark.createDataFrame(Ne_rdd).cache()
 
 F_result = pos_result.union(Ne_result)
 
-"""Change colume name "qas_question " to "qusetion""""
+"""Change colume name qas_question  to qusetion"""
 
 F_result = F_result.withColumnRenamed("qas_question","question")
 

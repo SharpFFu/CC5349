@@ -172,4 +172,4 @@ result.show()
 
 result.count()
 
-result.write.json("output.json")
+result.write.json("output_cuda.json")

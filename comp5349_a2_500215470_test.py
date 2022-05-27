@@ -40,6 +40,8 @@ import random
 
 Test_data_df = test_init_df.select(explode("data").alias("data"))
 
+Test_data_df.show(5)
+
 """1. paragraph"""
 
 Test_data_df = Test_data_df.select(explode("data.paragraphs").alias("paragraph"))
@@ -124,6 +126,8 @@ def sample_pos(line):
 
 pos_Sample_rdd= Test_RDD.flatMap(sample_pos)
 
+pos_Sample_rdd.take(5)
+
 """RDD -> Dataframe"""
 
 pos_Sample_df= spark.createDataFrame(pos_Sample_rdd).cache()
@@ -162,9 +166,9 @@ def sample_impos_count(count, positive_contract_count):
 
 """udf function to label the ne sample"""
 
-udf_fc = udf(lambda x,y:sample_impos_count(x,y))
+cacluN_fc = udf(lambda x,y:sample_impos_count(x,y))
 
-impos_sample_df = impos_sample_df.withColumn("impossible_count",udf_fc(col("count"),col("positive_contract_num"))).select("*",round("impossible_count")).withColumnRenamed("round(impossible_count, 0)","impossible_count_result")
+impos_sample_df = impos_sample_df.withColumn("impossible_count",cacluN_fc(col("count"),col("positive_contract_num"))).select("*",round("impossible_count")).withColumnRenamed("round(impossible_count, 0)","impossible_count_result")
 
 impos_sample_df = impos_sample_df.select("paragraph_context","qas_question","qas_is_impossible","answer_start","answer_text","impossible_count_result")
 
@@ -178,7 +182,7 @@ impos_sample_rdd = impos_sample_df.rdd.map(lambda x:(x[0], x[1], x[2], x[3], x[4
 
 def sample_impos(line):
   stride = 2048
-  window_size = 4096
+  window = 4096
   result = []
   source_number = int(line[5])
   context_length = len(line[1])
@@ -187,7 +191,7 @@ def sample_impos(line):
   else:
     times = int(context_length / stride) + 1
   for i in range(times):
-      result.append(Row(source=line[1][i * stride: i * stride + window_size], question=line[0], answer_start=0, answer_end=0))
+      result.append(Row(source=line[1][i * stride: i * stride + window], question=line[0], answer_start=0, answer_end=0))
   return result[:source_number]
 
 Ne_rdd = impos_sample_rdd.flatMap(sample_impos)
@@ -200,7 +204,7 @@ Ne_result = spark.createDataFrame(Ne_rdd).cache()
 
 F_result = pos_result.union(Ne_result)
 
-"""Change colume name qas_question to qusetion"""
+"""Change colume name "qas_question " to "qusetion""""
 
 F_result = F_result.withColumnRenamed("qas_question","question")
 
